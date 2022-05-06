@@ -1,4 +1,5 @@
 ﻿using dotnetcore60.Models;
+using dotnetcore60.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,10 +8,12 @@ namespace dotnetcore60.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ISimulator _simulator;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ISimulator simulator)
         {
             _logger = logger;
+            _simulator = simulator;
         }
 
         public IActionResult Index()
@@ -20,25 +23,64 @@ namespace dotnetcore60.Controllers
 
         public IActionResult Privacy()
         {
-            throw new ApplicationException("Find this in trace file");
+            _simulator.ThrowException();
             return View();
         }
 
         public IActionResult Slow()
         {
-            Thread.Sleep(5000);
+            _simulator.SyncLowSleep();
             return View();
         }
 
         public IActionResult HighSleep()
         {
-            Thread.Sleep(215 * 1000);
+            _simulator.SyncHighSleep();
+            return View();
+        }
+
+        public async Task<IActionResult> SlowOutboundHttpServiceAsync()
+        {
+            await _simulator.SlowOutboundHttpServiceAsync();
+            return View();
+        }
+        public async Task<IActionResult> SlowDatabaseConnectionAsync()
+        {
+            await _simulator.SlowDatabaseConnectionAsync();
+            return View();
+        }
+        public async Task<IActionResult> SleepAsync()
+        {
+            await _simulator.SleepAsync();
+            return View();
+        }
+        public IActionResult SlowOutboundServiceSync()
+        {
+            _simulator.SlowOutboundService();
+            return View();
+        }
+
+        public IActionResult SlowDatabaseConnectionSync()
+        {
+            _simulator.SlowDatabaseConnection();
             return View();
         }
 
         public IActionResult NestedExceptionCrash()
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(CrashMe));
+            return View();
+        }
+
+        public IActionResult LeakMemoryLow()
+        {
+            _simulator.LeakMemoryLow();
+            return View();
+        }
+
+        public IActionResult LeakMemoryHigh()
+        {
+            _simulator.LeakMemoryHigh();
             return View();
         }
 
