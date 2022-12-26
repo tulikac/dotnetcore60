@@ -17,9 +17,7 @@ namespace dotnetcore60.Services
         Task SleepAsync();
         Task SlowOutboundHttpServiceAsync();
         Task SlowDatabaseConnectionAsync();
-
-        
-
+        void CauseStackOverflow();
     }
     public class SimulationService : ISimulator
     {
@@ -133,6 +131,30 @@ namespace dotnetcore60.Services
         public void SyncLowSleep()
         {
             Thread.Sleep(9000);
+        }
+
+        public void CauseStackOverflow()
+        {
+            ThisIsARecursiveFunctionUsedToTriggerAStackOVerflow();
+        }
+
+        private void ThisIsARecursiveFunctionUsedToTriggerAStackOVerflow()
+        {
+            try
+            {
+                for (int i = 0; i < 1000; i++)
+                {
+                    ThisIsARecursiveFunctionUsedToTriggerAStackOVerflow();
+                }
+            }
+            catch (StackOverflowException ex)
+            {
+                Console.Write(ex.Message + "<-*******->" + ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
         }
     }
 

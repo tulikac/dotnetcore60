@@ -84,6 +84,12 @@ namespace dotnetcore60.Controllers
             return View();
         }
 
+        public IActionResult ThrowStackOverflow()
+        {
+            _simulator.CauseStackOverflow();
+            return View();
+        }
+
         void CrashMe(object obj)
         {
             try
@@ -105,6 +111,6 @@ namespace dotnetcore60.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        } 
     }
 }
