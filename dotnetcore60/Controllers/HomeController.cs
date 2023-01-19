@@ -5,6 +5,24 @@ using System.Diagnostics;
 
 namespace dotnetcore60.Controllers
 {
+    public static class FileSizeFormatter
+    {
+        // Load all suffixes in an array  
+        static readonly string[] suffixes =
+        { "Bytes", "KB", "MB", "GB", "TB", "PB" };
+        public static string FormatSize(Int64 bytes)
+        {
+            int counter = 0;
+            decimal number = (decimal)bytes;
+            while (Math.Round(number / 1024) >= 1)
+            {
+                number = number / 1024;
+                counter++;
+            }
+            return string.Format("{0:n1}{1}", number, suffixes[counter]);
+        }
+    }
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -97,6 +115,11 @@ namespace dotnetcore60.Controllers
             {
                 string path = "/sys/fs/cgroup/memory/memory.usage_in_bytes";
                 usageInBytes = System.IO.File.ReadAllText(path);
+
+                if (long.TryParse(usageInBytes, out long memoryUsage))
+                {
+                    usageInBytes = FileSizeFormatter.FormatSize(memoryUsage);
+                }
             }
             catch (Exception ex)
             {
