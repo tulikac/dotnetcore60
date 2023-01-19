@@ -90,6 +90,22 @@ namespace dotnetcore60.Controllers
             return View();
         }
 
+        public IActionResult GetContainerMemory()
+        {
+            string usageInBytes;
+            try
+            {
+                string path = "/sys/fs/cgroup/memory/memory.usage_in_bytes";
+                usageInBytes = System.IO.File.ReadAllText(path);
+            }
+            catch (Exception ex)
+            {
+                usageInBytes = ex.Message;
+            }
+
+            return View("GetContainerMemory", usageInBytes);
+        }
+
         void CrashMe(object obj)
         {
             try
