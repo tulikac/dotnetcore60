@@ -18,6 +18,7 @@ namespace dotnetcore60.Services
         Task SlowOutboundHttpServiceAsync();
         Task SlowDatabaseConnectionAsync();
         void CauseStackOverflow();
+        void ThrowPIIException();
     }
     public class SimulationService : ISimulator
     {
@@ -155,6 +156,11 @@ namespace dotnetcore60.Services
             {
                 Console.Write(ex.Message);
             }
+        }
+
+        public void ThrowPIIException()
+        {
+            throw new ApplicationException("Let me log my super sensitive API Key in my exception message - 123456789012345678901234");
         }
     }
 

@@ -45,6 +45,12 @@ namespace dotnetcore60.Controllers
             return View();
         }
 
+        public IActionResult ThrowPIIException()
+        {
+            _simulator.ThrowPIIException();
+            return View();
+        }
+
         public IActionResult Slow()
         {
             _simulator.SyncLowSleep();
