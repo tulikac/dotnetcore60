@@ -5,3 +5,28 @@
 <div class="text-center">
     <h1 class="display-4">Linux ASP.NET Core Test Scenarios web site</h1>
 </div>
+
+<div class="mt-4 col-md-6">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Setting</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Process Uptime</td>
+                <td>@DateTime.Now.Subtract(System.Diagnostics.Process.GetCurrentProcess().StartTime).ToString()</td>
+            </tr>
+            <tr>
+                <td>Process Id</td>
+                <td>@System.Diagnostics.Process.GetCurrentProcess().Id.ToString()</td>
+            </tr>
+            <tr>
+                <td>MachineName</td>
+                <td>@Environment.MachineName</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

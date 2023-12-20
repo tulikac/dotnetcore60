@@ -24,4 +24,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+string? shouldCrash = Environment.GetEnvironmentVariable("ShouldCrash");
+if (!string.IsNullOrWhiteSpace(shouldCrash))
+{
+    throw new Exception("I am going to crash now at startup");
+}
+
+string? shouldHang = Environment.GetEnvironmentVariable("ShouldHang");
+if (!string.IsNullOrWhiteSpace(shouldHang))
+{
+    Console.WriteLine("I am going to hang the app now");
+}
+
 app.Run();
