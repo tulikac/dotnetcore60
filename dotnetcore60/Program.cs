@@ -34,6 +34,7 @@ string? shouldHang = Environment.GetEnvironmentVariable("ShouldHang");
 if (!string.IsNullOrWhiteSpace(shouldHang))
 {
     Console.WriteLine("I am going to hang the app now");
+    Thread.Sleep(60 * 1000 * 60);
 }
 
 app.Run();
